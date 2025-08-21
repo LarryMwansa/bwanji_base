@@ -39,30 +39,57 @@ export default function QrCodeGenerator() {
   // Function to download QR code as PNG
   const handleDownload = () => {
     const qrValue = getQrValue();
-    // Prevent download if no input data
     if (!qrValue || qrValue.trim() === '') return;
     const svg = document.querySelector('#qr-svg');
     if (!svg) return;
     const serializer = new XMLSerializer();
     const svgStr = serializer.serializeToString(svg);
-    // Calculate pixel size for DPI
-    // 1 inch = 96px in browser, so scale canvas size by dpi/96
     const scale = dpi / 96;
+    const exportSize = Math.round(size * scale);
     const canvas = document.createElement('canvas');
-    canvas.width = Math.round(size * scale);
-    canvas.height = Math.round(size * scale);
+    canvas.width = exportSize;
+    canvas.height = exportSize;
     const ctx = canvas.getContext('2d');
+
+    // Draw QR code SVG centered
     const img = new window.Image();
     img.onload = function () {
-      ctx.setTransform(scale, 0, 0, scale, 0, 0); // scale SVG to DPI
-      ctx.drawImage(img, 0, 0);
-      const pngFile = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.download = `qrcode_${dpi}dpi.png`;
-      link.href = pngFile;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const qrSize = 238 * scale;
+      const offset = (exportSize - qrSize) / 2;
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, exportSize, exportSize);
+      ctx.drawImage(img, offset, offset, qrSize, qrSize);
+
+      // Draw logo if present
+      if (logo) {
+        const logoImg = new window.Image();
+        logoImg.onload = function () {
+          const logoSize = Math.round(238 * 0.15 * scale);
+          const logoX = offset + (qrSize - logoSize) / 2;
+          const logoY = offset + (qrSize - logoSize) / 2;
+          ctx.save();
+          ctx.fillStyle = 'white';
+          ctx.fillRect(logoX, logoY, logoSize, logoSize);
+          ctx.restore();
+          ctx.drawImage(logoImg, logoX, logoY, logoSize, logoSize);
+          const pngFile = canvas.toDataURL('image/png');
+          const link = document.createElement('a');
+          link.download = `qrcode_${dpi}dpi.png`;
+          link.href = pngFile;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        };
+        logoImg.src = logo;
+      } else {
+        const pngFile = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.download = `qrcode_${dpi}dpi.png`;
+        link.href = pngFile;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     };
     img.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgStr)));
   };
@@ -294,39 +321,18 @@ export default function QrCodeGenerator() {
         (type === 'vcard' && fields.vcard_name.trim())
       ) && (
         <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ position: 'relative', width: size, height: size }}>
-            <QRCodeSVG id="qr-svg" value={getQrValue()} size={size} />
-            {logo && (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  width: Math.round(size * 0.25),
-                  height: Math.round(size * 0.25),
-                  background: 'white',
-                  borderRadius: '10%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 0 4px rgba(0,0,0,0.05)',
-                  zIndex: 1,
-                }}
-              >
-                <img
-                  src={logo}
-                  alt="Logo"
-                  style={{
-                    width: '80%',
-                    height: '80%',
-                    objectFit: 'contain',
-                    borderRadius: '10%',
-                    pointerEvents: 'none',
-                  }}
-                />
-              </div>
-            )}
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '238px', height: '238px' }}>
+            <QRCodeSVG
+              id="qr-svg"
+              value={getQrValue()}
+              size={238}
+              imageSettings={logo ? {
+                src: logo,
+                height: Math.round(238 * 0.15),
+                width: Math.round(238 * 0.15),
+                excavate: true
+              } : undefined}
+            />
           </div>
           <button onClick={handleDownload} style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}>
             Download QR Code
