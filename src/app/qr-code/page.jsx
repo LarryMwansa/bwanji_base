@@ -6,7 +6,7 @@ import { QRCodeSVG } from 'qrcode.react';
 export default function QrCodeGenerator() {
   const [type, setType] = useState('text');
   const [fields, setFields] = useState({
-    text: '',
+    text: 'https://qr-code.bwanji.digital.com',
     email: '',
     phone: '',
     wifi_ssid: '',
@@ -55,6 +55,7 @@ export default function QrCodeGenerator() {
     };
     img.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgStr)));
   };
+      {/* ...existing code... */}
       <label style={{ marginBottom: '1rem' }}>
         DPI:
         <select
@@ -138,6 +139,21 @@ export default function QrCodeGenerator() {
           <option value="UTF-8">UTF-8</option>
           <option value="ANSI">ANSI</option>
           <option value="Cyrillic">Cyrillic</option>
+        </select>
+      </label>
+
+      <label style={{ marginBottom: '1rem' }}>
+        DPI:
+        <select
+          value={dpi}
+          onChange={e => setDpi(Number(e.target.value))}
+          style={{ marginLeft: '0.5rem', padding: '0.3rem', width: '100px' }}
+        >
+          <option value={72}>72 DPI</option>
+          <option value={150}>150 DPI</option>
+          <option value={300}>300 DPI (default)</option>
+          <option value={450}>450 DPI</option>
+          <option value={600}>600 DPI</option>
         </select>
       </label>
 
