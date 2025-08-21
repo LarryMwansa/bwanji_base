@@ -24,6 +24,17 @@ export default function QrCodeGenerator() {
   const [size, setSize] = useState(238); // Default to small
   const [encoding, setEncoding] = useState('UTF-8'); // Default encoding
   const [dpi, setDpi] = useState(300); // Default DPI
+  const [logo, setLogo] = useState(null); // Logo image data URL
+  // Handle logo upload
+  const handleLogoUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setLogo(ev.target.result);
+    };
+    reader.readAsDataURL(file);
+  };
 
   // Function to download QR code as PNG
   const handleDownload = () => {
@@ -55,21 +66,7 @@ export default function QrCodeGenerator() {
     };
     img.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgStr)));
   };
-      {/* ...existing code... */}
-      <label style={{ marginBottom: '1rem' }}>
-        DPI:
-        <select
-          value={dpi}
-          onChange={e => setDpi(Number(e.target.value))}
-          style={{ marginLeft: '0.5rem', padding: '0.3rem', width: '100px' }}
-        >
-          <option value={72}>72 DPI</option>
-          <option value={150}>150 DPI</option>
-          <option value={300}>300 DPI (default)</option>
-          <option value={450}>450 DPI</option>
-          <option value={600}>600 DPI</option>
-        </select>
-      </label>
+     
 
   // Format QR value based on type and encoding
   const encodeValue = (value) => {
@@ -155,6 +152,16 @@ export default function QrCodeGenerator() {
           <option value={450}>450 DPI</option>
           <option value={600}>600 DPI</option>
         </select>
+      </label>
+
+      <label style={{ marginBottom: '1rem' }}>
+        Logo (centered):
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleLogoUpload}
+          style={{ marginLeft: '0.5rem' }}
+        />
       </label>
 
       {/* Dynamic input fields */}
@@ -287,7 +294,40 @@ export default function QrCodeGenerator() {
         (type === 'vcard' && fields.vcard_name.trim())
       ) && (
         <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <QRCodeSVG id="qr-svg" value={getQrValue()} size={size} />
+          <div style={{ position: 'relative', width: size, height: size }}>
+            <QRCodeSVG id="qr-svg" value={getQrValue()} size={size} />
+            {logo && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: Math.round(size * 0.25),
+                  height: Math.round(size * 0.25),
+                  background: 'white',
+                  borderRadius: '10%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 0 4px rgba(0,0,0,0.05)',
+                  zIndex: 1,
+                }}
+              >
+                <img
+                  src={logo}
+                  alt="Logo"
+                  style={{
+                    width: '80%',
+                    height: '80%',
+                    objectFit: 'contain',
+                    borderRadius: '10%',
+                    pointerEvents: 'none',
+                  }}
+                />
+              </div>
+            )}
+          </div>
           <button onClick={handleDownload} style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}>
             Download QR Code
           </button>
