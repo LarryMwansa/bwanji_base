@@ -66,6 +66,11 @@ export default function SocialFormatter() {
     navigator.clipboard.writeText(formatted);
   }
 
+  function handleClear() {
+    setInput("");
+    setFormatted("");
+  }
+
   // Unicode style maps
   const unicodeMaps = {
     bold: {
@@ -195,6 +200,7 @@ export default function SocialFormatter() {
       <div className={styles.buttonRow}>
         <button className={styles.button} onClick={handleFormat}>Format</button>
         <button className={styles.button} onClick={handleCopy}>Copy</button>
+        <button className={styles.button} onClick={handleClear}>Clear</button>
       </div>
       
     </main>
