@@ -171,7 +171,7 @@ export default function SocialFormatter() {
         )}
       </div>
       <div className={styles.row}>
-        <div className={styles.preview}>
+  <div className={`${styles.preview} ${styles.card}`}>
           {formatted
             ? formatted.split(/(\n+)/).map((chunk, idx) => {
                 if (/^\n+$/.test(chunk)) {
