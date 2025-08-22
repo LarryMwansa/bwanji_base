@@ -119,39 +119,17 @@ export default function SocialFormatter() {
   }
 
   return (
-    <main style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2rem" }}>
+    <main style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2rem", width: "100%" }}>
       <h1>Social Media Post Formatter</h1>
-      <div style={{ display: "flex", flexDirection: "row", gap: "2rem", marginBottom: "1rem", alignItems: "flex-start" }}>
-        <div style={{ width: "400px", minHeight: "100px", border: "1px solid #ccc", borderRadius: "8px", padding: "1rem", background: "#fafafa" }}>
-          {formatted
-            ? formatted.split(/(\n+)/).map((chunk, idx) => {
-                if (/^\n+$/.test(chunk)) {
-                  // For each extra line break, add a blank div for spacing
-                  return Array(chunk.length).fill().map((_, i) => <div key={idx + '-' + i} style={{height: '1em'}}></div>);
-                }
-                return <div key={idx}>{chunk}</div>;
-              }).flat()
-            : "Preview will appear here..."}
-        </div>
-        <textarea
-          id="post-input"
-          ref={textareaRef}
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          placeholder="Type your post here..."
-          rows={6}
-          style={{ width: "400px", padding: "1rem", marginBottom: "0.5rem" }}
-        />
-      </div>
-      {/* Toolbar */}
-      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem", position: "relative" }}>
+      {/* Topbar formatting tools */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center", justifyContent: "center", width: "100%", background: "#f5f5f5", borderRadius: "8px", padding: "0.5rem 0", marginBottom: "1rem", boxShadow: "0 2px 8px #0001" }}>
         <button type="button" onClick={() => applyUnicodeStyle("bold")}>Bold</button>
         <button type="button" onClick={() => applyUnicodeStyle("italic")}>Italic</button>
         <button type="button" onClick={() => applyUnicodeStyle("strikethrough")}>Strikethrough</button>
         <button type="button" onClick={() => applyUnicodeStyle("monospace")}>Monospace</button>
         <button type="button" onClick={() => setShowEmojiPicker(s => !s)}>Emoji</button>
         <button type="button" onClick={insertBullet}>Bullet Point</button>
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative", display: "inline-block" }}>
           <button type="button" onClick={() => setShowCaseDropdown(s => !s)}>
             Change Case ▼
           </button>
@@ -168,6 +146,29 @@ export default function SocialFormatter() {
             <Picker onEmojiSelect={insertEmoji} theme="light" />
           </div>
         )}
+      </div>
+      {/* Responsive row for preview and textarea */}
+      <div style={{ display: "flex", flexDirection: "row", gap: "2rem", width: "100%", maxWidth: "900px", marginBottom: "1rem", flexWrap: "wrap" }}>
+        <div style={{ flex: 1, minWidth: "280px", maxWidth: "440px", minHeight: "100px", border: "1px solid #ccc", borderRadius: "8px", padding: "1rem", background: "#fafafa" }}>
+          {formatted
+            ? formatted.split(/(\n+)/).map((chunk, idx) => {
+                if (/^\n+$/.test(chunk)) {
+                  // For each extra line break, add a blank div for spacing
+                  return Array(chunk.length).fill().map((_, i) => <div key={idx + '-' + i} style={{height: '1em'}}></div>);
+                }
+                return <div key={idx}>{chunk}</div>;
+              }).flat()
+            : "Preview will appear here..."}
+        </div>
+        <textarea
+          id="post-input"
+          ref={textareaRef}
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          placeholder="Type your post here..."
+          rows={10}
+          style={{ flex: 1, minWidth: "280px", maxWidth: "440px", padding: "1rem", marginBottom: "0.5rem", resize: "vertical" }}
+        />
       </div>
       <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
         <button onClick={handleFormat}>Format</button>
