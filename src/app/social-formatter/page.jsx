@@ -1,8 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react";
-import { Picker } from "emoji-mart";
-import "emoji-mart/css/emoji-mart.css";
+import Picker from '@emoji-mart/react';
 
 export default function SocialFormatter() {
   const [input, setInput] = useState("");
@@ -119,7 +118,7 @@ export default function SocialFormatter() {
         <button type="button" onClick={insertBullet}>Bullet Point</button>
         {showEmojiPicker && (
           <div style={{ position: "absolute", top: "2.5rem", left: "0", zIndex: 10 }}>
-            <Picker onSelect={insertEmoji} theme="light" />
+            <Picker onEmojiSelect={insertEmoji} theme="light" />
           </div>
         )}
       </div>
