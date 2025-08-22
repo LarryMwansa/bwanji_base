@@ -185,7 +185,7 @@ export default function QrCodeGenerator() {
       ) : (
         <>
           {/* Type selector and logo upload */}
-          <div style={{ display: 'flex', flexDirection: 'row', gap: '2rem', marginBottom: '2rem', alignItems: 'flex-end' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '2rem', marginBottom: '2rem', alignItems: 'flex-start' }}>
             {/* Type selector */}
             <div>
               <label style={{ marginBottom: '0.5rem', display: 'block' }}>
@@ -200,140 +200,191 @@ export default function QrCodeGenerator() {
                 </select>
               </label>
             </div>
-            {/* Logo upload */}
-            <div>
-              <label style={{ marginBottom: '0.5rem', display: 'block' }}>
-                Logo (centered):
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleLogoUpload}
-                  style={{ marginLeft: '0.5rem' }}
-                />
-              </label>
-            </div>
-            <div className="input_box">
-              
-            </div>
-            {/* Dynamic input fields */}
+            {/* Input fields and logo upload stacked vertically */}
             <div>
               {type === 'text' && (
-                <input
-                  type="text"
-                  value={fields.text}
-                  onChange={e => setFields(f => ({ ...f, text: e.target.value }))}
-                  placeholder="Enter text or URL"
-                  style={{ padding: '0.5rem', width: '300px', marginBottom: '1rem' }}
-                />
+                <>
+                  <input
+                    type="text"
+                    value={fields.text}
+                    onChange={e => setFields(f => ({ ...f, text: e.target.value }))}
+                    placeholder="Enter text or URL"
+                    style={{ padding: '0.5rem', width: '300px', marginBottom: '1rem' }}
+                  />
+                  <label style={{ marginBottom: '0.5rem', display: 'block' }}>
+                    Logo (centered):
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoUpload}
+                      style={{ marginLeft: '0.5rem' }}
+                    />
+                  </label>
+                </>
               )}
               {type === 'email' && (
-                <input
-                  type="email"
-                  value={fields.email}
-                  onChange={e => setFields(f => ({ ...f, email: e.target.value }))}
-                  placeholder="Enter email address"
-                  style={{ padding: '0.5rem', width: '300px', marginBottom: '1rem' }}
-                />
-              )}
-              {type === 'phone' && (
-                <input
-                  type="tel"
-                  value={fields.phone}
-                  onChange={e => setFields(f => ({ ...f, phone: e.target.value }))}
-                  placeholder="Enter phone number"
-                  style={{ padding: '0.5rem', width: '300px', marginBottom: '1rem' }}
-                />
-              )}
-              {type === 'wifi' && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
-                  <input
-                    type="text"
-                    value={fields.wifi_ssid}
-                    onChange={e => setFields(f => ({ ...f, wifi_ssid: e.target.value }))}
-                    placeholder="WiFi SSID"
-                    style={{ padding: '0.5rem', width: '300px' }}
-                  />
-                  <input
-                    type="text"
-                    value={fields.wifi_password}
-                    onChange={e => setFields(f => ({ ...f, wifi_password: e.target.value }))}
-                    placeholder="WiFi Password"
-                    style={{ padding: '0.5rem', width: '300px' }}
-                  />
-                  <select
-                    value={fields.wifi_encryption}
-                    onChange={e => setFields(f => ({ ...f, wifi_encryption: e.target.value }))}
-                    style={{ padding: '0.3rem', width: '150px' }}
-                  >
-                    <option value="WPA">WPA/WPA2</option>
-                    <option value="WEP">WEP</option>
-                    <option value="nopass">None</option>
-                  </select>
-                </div>
-              )}
-              {type === 'event' && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
-                  <input
-                    type="text"
-                    value={fields.event_summary}
-                    onChange={e => setFields(f => ({ ...f, event_summary: e.target.value }))}
-                    placeholder="Event Summary"
-                    style={{ padding: '0.5rem', width: '300px' }}
-                  />
-                  <input
-                    type="text"
-                    value={fields.event_location}
-                    onChange={e => setFields(f => ({ ...f, event_location: e.target.value }))}
-                    placeholder="Event Location"
-                    style={{ padding: '0.5rem', width: '300px' }}
-                  />
-                  <input
-                    type="datetime-local"
-                    value={fields.event_start}
-                    onChange={e => setFields(f => ({ ...f, event_start: e.target.value }))}
-                    placeholder="Start Date/Time"
-                    style={{ padding: '0.5rem', width: '300px' }}
-                  />
-                  <input
-                    type="datetime-local"
-                    value={fields.event_end}
-                    onChange={e => setFields(f => ({ ...f, event_end: e.target.value }))}
-                    placeholder="End Date/Time"
-                    style={{ padding: '0.5rem', width: '300px' }}
-                  />
-                </div>
-              )}
-              {type === 'vcard' && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
-                  <input
-                    type="text"
-                    value={fields.vcard_name}
-                    onChange={e => setFields(f => ({ ...f, vcard_name: e.target.value }))}
-                    placeholder="Full Name"
-                    style={{ padding: '0.5rem', width: '300px' }}
-                  />
-                  <input
-                    type="tel"
-                    value={fields.vcard_phone}
-                    onChange={e => setFields(f => ({ ...f, vcard_phone: e.target.value }))}
-                    placeholder="Phone Number"
-                    style={{ padding: '0.5rem', width: '300px' }}
-                  />
+                <>
                   <input
                     type="email"
-                    value={fields.vcard_email}
-                    onChange={e => setFields(f => ({ ...f, vcard_email: e.target.value }))}
-                    placeholder="Email Address"
-                    style={{ padding: '0.5rem', width: '300px' }}
+                    value={fields.email}
+                    onChange={e => setFields(f => ({ ...f, email: e.target.value }))}
+                    placeholder="Enter email address"
+                    style={{ padding: '0.5rem', width: '300px', marginBottom: '1rem' }}
                   />
+                  <label style={{ marginBottom: '0.5rem', display: 'block' }}>
+                    Logo (centered):
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoUpload}
+                      style={{ marginLeft: '0.5rem' }}
+                    />
+                  </label>
+                </>
+              )}
+              {type === 'phone' && (
+                <>
                   <input
-                    type="text"
-                    value={fields.vcard_org}
-                    onChange={e => setFields(f => ({ ...f, vcard_org: e.target.value }))}
-                    placeholder="Organization"
-                    style={{ padding: '0.5rem', width: '300px' }}
+                    type="tel"
+                    value={fields.phone}
+                    onChange={e => setFields(f => ({ ...f, phone: e.target.value }))}
+                    placeholder="Enter phone number"
+                    style={{ padding: '0.5rem', width: '300px', marginBottom: '1rem' }}
                   />
-                </div>
+                  <label style={{ marginBottom: '0.5rem', display: 'block' }}>
+                    Logo (centered):
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoUpload}
+                      style={{ marginLeft: '0.5rem' }}
+                    />
+                  </label>
+                </>
+              )}
+              {type === 'wifi' && (
+                <>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
+                    <input
+                      type="text"
+                      value={fields.wifi_ssid}
+                      onChange={e => setFields(f => ({ ...f, wifi_ssid: e.target.value }))}
+                      placeholder="WiFi SSID"
+                      style={{ padding: '0.5rem', width: '300px' }}
+                    />
+                    <input
+                      type="text"
+                      value={fields.wifi_password}
+                      onChange={e => setFields(f => ({ ...f, wifi_password: e.target.value }))}
+                      placeholder="WiFi Password"
+                      style={{ padding: '0.5rem', width: '300px' }}
+                    />
+                    <select
+                      value={fields.wifi_encryption}
+                      onChange={e => setFields(f => ({ ...f, wifi_encryption: e.target.value }))}
+                      style={{ padding: '0.3rem', width: '150px' }}
+                    >
+                      <option value="WPA">WPA/WPA2</option>
+                      <option value="WEP">WEP</option>
+                      <option value="nopass">None</option>
+                    </select>
+                  </div>
+                  <label style={{ marginBottom: '0.5rem', display: 'block' }}>
+                    Logo (centered):
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoUpload}
+                      style={{ marginLeft: '0.5rem' }}
+                    />
+                  </label>
+                </>
+              )}
+              {type === 'event' && (
+                <>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
+                    <input
+                      type="text"
+                      value={fields.event_summary}
+                      onChange={e => setFields(f => ({ ...f, event_summary: e.target.value }))}
+                      placeholder="Event Summary"
+                      style={{ padding: '0.5rem', width: '300px' }}
+                    />
+                    <input
+                      type="text"
+                      value={fields.event_location}
+                      onChange={e => setFields(f => ({ ...f, event_location: e.target.value }))}
+                      placeholder="Event Location"
+                      style={{ padding: '0.5rem', width: '300px' }}
+                    />
+                    <input
+                      type="datetime-local"
+                      value={fields.event_start}
+                      onChange={e => setFields(f => ({ ...f, event_start: e.target.value }))}
+                      placeholder="Start Date/Time"
+                      style={{ padding: '0.5rem', width: '300px' }}
+                    />
+                    <input
+                      type="datetime-local"
+                      value={fields.event_end}
+                      onChange={e => setFields(f => ({ ...f, event_end: e.target.value }))}
+                      placeholder="End Date/Time"
+                      style={{ padding: '0.5rem', width: '300px' }}
+                    />
+                  </div>
+                  <label style={{ marginBottom: '0.5rem', display: 'block' }}>
+                    Logo (centered):
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoUpload}
+                      style={{ marginLeft: '0.5rem' }}
+                    />
+                  </label>
+                </>
+              )}
+              {type === 'vcard' && (
+                <>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
+                    <input
+                      type="text"
+                      value={fields.vcard_name}
+                      onChange={e => setFields(f => ({ ...f, vcard_name: e.target.value }))}
+                      placeholder="Full Name"
+                      style={{ padding: '0.5rem', width: '300px' }}
+                    />
+                    <input
+                      type="tel"
+                      value={fields.vcard_phone}
+                      onChange={e => setFields(f => ({ ...f, vcard_phone: e.target.value }))}
+                      placeholder="Phone Number"
+                      style={{ padding: '0.5rem', width: '300px' }}
+                    />
+                    <input
+                      type="email"
+                      value={fields.vcard_email}
+                      onChange={e => setFields(f => ({ ...f, vcard_email: e.target.value }))}
+                      placeholder="Email Address"
+                      style={{ padding: '0.5rem', width: '300px' }}
+                    />
+                    <input
+                      type="text"
+                      value={fields.vcard_org}
+                      onChange={e => setFields(f => ({ ...f, vcard_org: e.target.value }))}
+                      placeholder="Organization"
+                      style={{ padding: '0.5rem', width: '300px' }}
+                    />
+                  </div>
+                  <label style={{ marginBottom: '0.5rem', display: 'block' }}>
+                    Logo (centered):
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoUpload}
+                      style={{ marginLeft: '0.5rem' }}
+                    />
+                  </label>
+                </>
               )}
             </div>
           </div>
