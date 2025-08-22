@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import React, { useRef, useEffect } from "react";
+import styles from "./QRCodeGenerator.module.css";
 import { QRCodeSVG } from 'qrcode.react';
 
 export default function QRCodeGenerator() {
@@ -140,13 +141,12 @@ export default function QRCodeGenerator() {
   };
 
   return (
-    <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem', width: '100%' }}>
-      <h1>QR Code Generator</h1>
-      {/* Topbar for settings and input controls */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', justifyContent: 'center', width: '100%', background: '#f5f5f5', borderRadius: '8px', padding: '1rem 0', marginBottom: '2rem', boxShadow: '0 2px 8px #0001' }}>
-        <label>
+    <main className={styles.main}>
+      <h1 className={styles.title}>QR Code Generator</h1>
+      <div className={styles.topbar}>
+        <label className={styles.label}>
           Type:
-          <select value={type} onChange={e => setType(e.target.value)} style={{ marginLeft: '0.5rem', padding: '0.3rem' }}>
+          <select value={type} onChange={e => setType(e.target.value)} className={styles.select}>
             <option value="text">Text/URL</option>
             <option value="email">Email</option>
             <option value="phone">Phone</option>

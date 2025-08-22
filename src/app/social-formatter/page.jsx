@@ -1,13 +1,15 @@
 "use client"
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Picker from '@emoji-mart/react';
+import styles from "./SocialFormatter.module.css";
 
 export default function SocialFormatter() {
   const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
-  const [showEmoji, setShowEmoji] = useState(false);
+  const [formatted, setFormatted] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [caseType, setCaseType] = useState("none");
+  const [showCaseDropdown, setShowCaseDropdown] = useState(false);
   const [isDark, setIsDark] = useState(true);
   
   useEffect(() => {
@@ -141,37 +143,35 @@ export default function SocialFormatter() {
   }
 
   return (
-    <main style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2rem", width: "100%" }}>
-      <h1>Social Media Post Formatter</h1>
-      {/* Topbar formatting tools */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center", justifyContent: "center", width: "100%", background: "#f5f5f5", borderRadius: "8px", padding: "0.5rem 0", marginBottom: "1rem", boxShadow: "0 2px 8px #0001" }}>
+    <main className={styles.container}>
+      <h1 className={styles.heading}>Social Media Post Formatter</h1>
+      <div className={styles.topbar}>
         <button type="button" onClick={() => applyUnicodeStyle("bold")}>Bold</button>
         <button type="button" onClick={() => applyUnicodeStyle("italic")}>Italic</button>
         <button type="button" onClick={() => applyUnicodeStyle("strikethrough")}>Strikethrough</button>
         <button type="button" onClick={() => applyUnicodeStyle("monospace")}>Monospace</button>
-        <button type="button" onClick={() => setShowEmojiPicker(s => !s)}>Emoji</button>
+         <button type="button" onClick={() => setShowEmojiPicker(s => !s)}>Emoji</button>
         <button type="button" onClick={insertBullet}>Bullet Point</button>
-        <div style={{ position: "relative", display: "inline-block" }}>
+        <div className={styles.dropdownWrapper}>
           <button type="button" onClick={() => setShowCaseDropdown(s => !s)}>
             Change Case ▼
           </button>
           {showCaseDropdown && (
-            <div style={{ position: "absolute", top: "2.5rem", left: 0, background: "#fff", border: "1px solid #ccc", borderRadius: "8px", zIndex: 20, minWidth: "140px", boxShadow: "0 2px 8px #0002" }}>
-              <button type="button" style={{ width: "100%", textAlign: "left", padding: "0.5rem", border: "none", background: "none", cursor: "pointer" }} onClick={() => { applyTextTransform("uppercase"); setShowCaseDropdown(false); }}>ALL CAPS</button>
-              <button type="button" style={{ width: "100%", textAlign: "left", padding: "0.5rem", border: "none", background: "none", cursor: "pointer" }} onClick={() => { applyTextTransform("lowercase"); setShowCaseDropdown(false); }}>all lowercase</button>
-              <button type="button" style={{ width: "100%", textAlign: "left", padding: "0.5rem", border: "none", background: "none", cursor: "pointer" }} onClick={() => { applyTextTransform("titlecase"); setShowCaseDropdown(false); }}>Title Case</button>
+            <div className={styles.dropdownMenu}>
+              <button type="button" className={styles.dropdownItem} onClick={() => { applyTextTransform("uppercase"); setShowCaseDropdown(false); }}>ALL CAPS</button>
+              <button type="button" className={styles.dropdownItem} onClick={() => { applyTextTransform("lowercase"); setShowCaseDropdown(false); }}>all lowercase</button>
+              <button type="button" className={styles.dropdownItem} onClick={() => { applyTextTransform("titlecase"); setShowCaseDropdown(false); }}>Title Case</button>
             </div>
           )}
         </div>
         {showEmojiPicker && (
-          <div style={{ position: "absolute", top: "2.5rem", left: "0", zIndex: 10 }}>
+          <div className={styles.emojiPickerOverlay}>
             <Picker onEmojiSelect={insertEmoji} theme="light" />
           </div>
         )}
       </div>
-      {/* Responsive row for preview and textarea */}
-      <div style={{ display: "flex", flexDirection: "row", gap: "2rem", width: "100%", maxWidth: "900px", marginBottom: "1rem", flexWrap: "wrap" }}>
-        <div style={{ flex: 1, minWidth: "280px", maxWidth: "440px", minHeight: "100px", border: "1px solid #ccc", borderRadius: "8px", padding: "1rem", background: "#fafafa" }}>
+      <div className={styles.row}>
+        <div className={styles.preview}>
           {formatted
             ? formatted.split(/(\n+)/).map((chunk, idx) => {
                 if (/^\n+$/.test(chunk)) {
@@ -180,7 +180,7 @@ export default function SocialFormatter() {
                 }
                 return <div key={idx}>{chunk}</div>;
               }).flat()
-            : "Preview will appear here..."}
+            : <span className={styles.placeholder}>Preview will appear here...</span>}
         </div>
         <textarea
           id="post-input"
@@ -189,12 +189,12 @@ export default function SocialFormatter() {
           onChange={e => setInput(e.target.value)}
           placeholder="Type your post here..."
           rows={10}
-          style={{ flex: 1, minWidth: "280px", maxWidth: "440px", padding: "1rem", marginBottom: "0.5rem", resize: "vertical" }}
+          className={styles.card}
         />
       </div>
-      <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
-        <button onClick={handleFormat}>Format</button>
-        <button onClick={handleCopy}>Copy</button>
+      <div className={styles.buttonRow}>
+        <button className={styles.button} onClick={handleFormat}>Format</button>
+        <button className={styles.button} onClick={handleCopy}>Copy</button>
       </div>
       
     </main>

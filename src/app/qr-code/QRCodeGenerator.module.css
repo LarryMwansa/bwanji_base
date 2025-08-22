@@ -1,0 +1,61 @@
+/* QR Code Generator Page Styles */
+.container {
+  min-height: 100vh;
+  background: var(--bg);
+}
+.heading {
+  text-align: center;
+  color: var(--text);
+  margin-top: 40px;
+}
+.topbar {
+  background: var(--card-bg);
+  color: var(--card-text);
+  border-radius: 10px;
+  margin: 40px auto 0;
+  padding: 16px;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.qr-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+.qr-card {
+  background: var(--card-bg);
+  padding: 24px;
+  border-radius: 10px;
+}
+.download-btn {
+  margin-top: 24px;
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 24px;
+  cursor: pointer;
+  font-weight: 500;
+}
+:root {
+  --bg: #f5f5f5;
+  --text: #222;
+  --card-bg: #fff;
+  --card-text: #222;
+  --button-bg: #eee;
+  --button-text: #222;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111;
+    --text: #fff;
+    --card-bg: #222;
+    --card-text: #fff;
+    --button-bg: #333;
+    --button-text: #fff;
+  }
+}
