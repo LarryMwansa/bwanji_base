@@ -127,14 +127,17 @@ export default function SocialFormatter() {
         <button onClick={handleCopy}>Copy</button>
       </div>
       <div style={{ width: "400px", minHeight: "100px", border: "1px solid #ccc", borderRadius: "8px", padding: "1rem", background: "#fafafa" }}>
-        <span>{formatted || "Preview will appear here..."}</span>
+        {formatted
+          ? formatted.split(/(\n+)/).map((chunk, idx) => {
+              if (/^\n+$/.test(chunk)) {
+                // For each extra line break, add a blank div for spacing
+                return Array(chunk.length).fill().map((_, i) => <div key={idx + '-' + i} style={{height: '1em'}} />);
+              }
+              return <div key={idx}>{chunk}</div>;
+            })
+          : "Preview will appear here..."}
       </div>
-      <div style={{ marginTop: "2rem", color: "#888", fontSize: "0.9rem" }}>
-        <p><b>Formatting:</b> <br />
-          <span>**bold** &nbsp; *italic* &nbsp; ~~strikethrough~~ &nbsp; `monospace`</span>
-        </p>
-        <p>Use emoji and special characters for extra flair!</p>
-      </div>
+      
     </main>
   );
 }
