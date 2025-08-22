@@ -121,15 +121,28 @@ export default function SocialFormatter() {
   return (
     <main style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2rem" }}>
       <h1>Social Media Post Formatter</h1>
-      <textarea
-        id="post-input"
-        ref={textareaRef}
-        value={input}
-        onChange={e => setInput(e.target.value)}
-        placeholder="Type your post here..."
-        rows={6}
-        style={{ width: "400px", padding: "1rem", marginBottom: "0.5rem" }}
-      />
+      <div style={{ display: "flex", flexDirection: "row", gap: "2rem", marginBottom: "1rem", alignItems: "flex-start" }}>
+        <div style={{ width: "400px", minHeight: "100px", border: "1px solid #ccc", borderRadius: "8px", padding: "1rem", background: "#fafafa" }}>
+          {formatted
+            ? formatted.split(/(\n+)/).map((chunk, idx) => {
+                if (/^\n+$/.test(chunk)) {
+                  // For each extra line break, add a blank div for spacing
+                  return Array(chunk.length).fill().map((_, i) => <div key={idx + '-' + i} style={{height: '1em'}}></div>);
+                }
+                return <div key={idx}>{chunk}</div>;
+              }).flat()
+            : "Preview will appear here..."}
+        </div>
+        <textarea
+          id="post-input"
+          ref={textareaRef}
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          placeholder="Type your post here..."
+          rows={6}
+          style={{ width: "400px", padding: "1rem", marginBottom: "0.5rem" }}
+        />
+      </div>
       {/* Toolbar */}
       <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem", position: "relative" }}>
         <button type="button" onClick={() => applyUnicodeStyle("bold")}>Bold</button>
@@ -159,17 +172,6 @@ export default function SocialFormatter() {
       <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
         <button onClick={handleFormat}>Format</button>
         <button onClick={handleCopy}>Copy</button>
-      </div>
-      <div style={{ width: "400px", minHeight: "100px", border: "1px solid #ccc", borderRadius: "8px", padding: "1rem", background: "#fafafa" }}>
-        {formatted
-          ? formatted.split(/(\n+)/).map((chunk, idx) => {
-              if (/^\n+$/.test(chunk)) {
-                // For each extra line break, add a blank div for spacing
-                return Array(chunk.length).fill().map((_, i) => <div key={idx + '-' + i} style={{height: '1em'}}></div>);
-              }
-              return <div key={idx}>{chunk}</div>;
-            }).flat()
-          : "Preview will appear here..."}
       </div>
       
     </main>
