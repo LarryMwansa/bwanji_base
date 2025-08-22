@@ -7,6 +7,7 @@ export default function SocialFormatter() {
   const [input, setInput] = useState("");
   const [formatted, setFormatted] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [showCaseDropdown, setShowCaseDropdown] = useState(false);
   const textareaRef = useRef(null);
 
   function insertEmoji(emoji) {
@@ -96,6 +97,27 @@ export default function SocialFormatter() {
     }, 0);
   }
 
+  function applyTextTransform(transform) {
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selected = input.slice(start, end);
+    let transformed = selected;
+    if (transform === "uppercase") {
+      transformed = selected.toUpperCase();
+    } else if (transform === "lowercase") {
+      transformed = selected.toLowerCase();
+    } else if (transform === "titlecase") {
+      transformed = selected.replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+    }
+    const newText = input.slice(0, start) + transformed + input.slice(end);
+    setInput(newText);
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start, start + transformed.length);
+    }, 0);
+  }
+
   return (
     <main style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2rem" }}>
       <h1>Social Media Post Formatter</h1>
@@ -116,6 +138,18 @@ export default function SocialFormatter() {
         <button type="button" onClick={() => applyUnicodeStyle("monospace")}>Monospace</button>
         <button type="button" onClick={() => setShowEmojiPicker(s => !s)}>Emoji</button>
         <button type="button" onClick={insertBullet}>Bullet Point</button>
+        <div style={{ position: "relative" }}>
+          <button type="button" onClick={() => setShowCaseDropdown(s => !s)}>
+            Change Case ▼
+          </button>
+          {showCaseDropdown && (
+            <div style={{ position: "absolute", top: "2.5rem", left: 0, background: "#fff", border: "1px solid #ccc", borderRadius: "8px", zIndex: 20, minWidth: "140px", boxShadow: "0 2px 8px #0002" }}>
+              <button type="button" style={{ width: "100%", textAlign: "left", padding: "0.5rem", border: "none", background: "none", cursor: "pointer" }} onClick={() => { applyTextTransform("uppercase"); setShowCaseDropdown(false); }}>ALL CAPS</button>
+              <button type="button" style={{ width: "100%", textAlign: "left", padding: "0.5rem", border: "none", background: "none", cursor: "pointer" }} onClick={() => { applyTextTransform("lowercase"); setShowCaseDropdown(false); }}>all lowercase</button>
+              <button type="button" style={{ width: "100%", textAlign: "left", padding: "0.5rem", border: "none", background: "none", cursor: "pointer" }} onClick={() => { applyTextTransform("titlecase"); setShowCaseDropdown(false); }}>Title Case</button>
+            </div>
+          )}
+        </div>
         {showEmojiPicker && (
           <div style={{ position: "absolute", top: "2.5rem", left: "0", zIndex: 10 }}>
             <Picker onEmojiSelect={insertEmoji} theme="light" />
@@ -131,10 +165,10 @@ export default function SocialFormatter() {
           ? formatted.split(/(\n+)/).map((chunk, idx) => {
               if (/^\n+$/.test(chunk)) {
                 // For each extra line break, add a blank div for spacing
-                return Array(chunk.length).fill().map((_, i) => <div key={idx + '-' + i} style={{height: '1em'}} />);
+                return Array(chunk.length).fill().map((_, i) => <div key={idx + '-' + i} style={{height: '1em'}}></div>);
               }
               return <div key={idx}>{chunk}</div>;
-            })
+            }).flat()
           : "Preview will appear here..."}
       </div>
       
