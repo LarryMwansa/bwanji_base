@@ -1,10 +1,13 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export default function SocialFormatter() {
   const [input, setInput] = useState("");
   const [formatted, setFormatted] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojiList = ["😊", "😂", "😍", "👍", "🙏", "🔥", "🎉", "💯", "😎", "🥳", "🤔", "😢", "👏", "🌟", "🚀", "❤️", "😃", "😉", "😇", "😜"];
+  const textareaRef = useRef(null);
 
   // Simple formatter: replaces markdown-like syntax with unicode
   function formatText(text) {
@@ -78,11 +81,27 @@ export default function SocialFormatter() {
     }, 0);
   }
 
+  function insertEmoji(emoji) {
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const before = input.slice(0, start);
+    const after = input.slice(end);
+    const newText = before + emoji + after;
+    setInput(newText);
+    setShowEmojiPicker(false);
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + emoji.length, start + emoji.length);
+    }, 0);
+  }
+
   return (
     <main style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2rem" }}>
       <h1>Social Media Post Formatter</h1>
       <textarea
         id="post-input"
+        ref={textareaRef}
         value={input}
         onChange={e => setInput(e.target.value)}
         placeholder="Type your post here..."
@@ -90,13 +109,20 @@ export default function SocialFormatter() {
         style={{ width: "400px", padding: "1rem", marginBottom: "0.5rem" }}
       />
       {/* Toolbar */}
-      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>
+      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem", position: "relative" }}>
         <button type="button" onClick={() => applyUnicodeStyle("bold")}>Bold</button>
         <button type="button" onClick={() => applyUnicodeStyle("italic")}>Italic</button>
         <button type="button" onClick={() => applyUnicodeStyle("strikethrough")}>Strikethrough</button>
         <button type="button" onClick={() => applyUnicodeStyle("monospace")}>Monospace</button>
-        <button type="button" onClick={() => setInput(input + " 😊")}>Emoji</button>
+        <button type="button" onClick={() => setShowEmojiPicker(s => !s)}>Emoji</button>
         <button type="button" onClick={insertBullet}>Bullet Point</button>
+        {showEmojiPicker && (
+          <div style={{ position: "absolute", top: "2.5rem", left: "0", background: "#fff", border: "1px solid #ccc", borderRadius: "8px", padding: "0.5rem", zIndex: 10, display: "flex", flexWrap: "wrap", gap: "0.3rem", width: "320px" }}>
+            {emojiList.map(emoji => (
+              <button key={emoji} type="button" style={{ fontSize: "1.5rem", padding: "0.3rem", background: "none", border: "none", cursor: "pointer" }} onClick={() => insertEmoji(emoji)}>{emoji}</button>
+            ))}
+          </div>
+        )}
       </div>
       <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
         <button onClick={handleFormat}>Format</button>
