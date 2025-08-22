@@ -1,9 +1,10 @@
 "use client"
 
 import { useState } from 'react';
+import React, { useRef, useEffect } from "react";
 import { QRCodeSVG } from 'qrcode.react';
 
-export default function QrCodeGenerator() {
+export default function QRCodeGenerator() {
   const [type, setType] = useState('text');
   const [fields, setFields] = useState({
     text: 'https://qr-code.bwanji.digital.com',
@@ -26,6 +27,8 @@ export default function QrCodeGenerator() {
   const [dpi, setDpi] = useState(300); // Default DPI
   const [logo, setLogo] = useState(null); // Logo image data URL
   const [showSettings, setShowSettings] = useState(false); // Toggle settings panel
+  const qrRef = useRef(null);
+  const [isDark, setIsDark] = useState(true);
 
   // Handle logo upload
   const handleLogoUpload = (e) => {

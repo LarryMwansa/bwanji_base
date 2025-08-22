@@ -5,9 +5,31 @@ import Picker from '@emoji-mart/react';
 
 export default function SocialFormatter() {
   const [input, setInput] = useState("");
-  const [formatted, setFormatted] = useState("");
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [showCaseDropdown, setShowCaseDropdown] = useState(false);
+  const [output, setOutput] = useState("");
+  const [showEmoji, setShowEmoji] = useState(false);
+  const [caseType, setCaseType] = useState("none");
+  const [isDark, setIsDark] = useState(true);
+  
+  useEffect(() => {
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      setIsDark(true);
+    } else {
+      setIsDark(false);
+    }
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = (e) => setIsDark(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+  
+  const bgColor = isDark ? "#111" : "#f5f5f5";
+  const textColor = isDark ? "#fff" : "#222";
+  const cardBg = isDark ? "#222" : "#fff";
+  const cardText = isDark ? "#fff" : "#222";
+  const previewBg = isDark ? "#222" : "#eee";
+  const previewText = isDark ? "#fff" : "#222";
+  const buttonBg = isDark ? "#333" : "#eee";
+  const buttonText = isDark ? "#fff" : "#222";
   const textareaRef = useRef(null);
 
   function insertEmoji(emoji) {
