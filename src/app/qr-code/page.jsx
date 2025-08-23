@@ -280,34 +280,36 @@ export default function QRCodeGenerator() {
       </div>
       {/* Settings Overlay or QR Preview */}
       {showSettings ? (
-        <div className={styles.settingsOverlay}>
-          <div className={styles.settingsPanel}>
-            <label>
-              Size:
-              <select value={size} onChange={e => setSize(Number(e.target.value))}>
-                <option value={238}>Small (238px)</option>
-                <option value={938}>Medium (938px)</option>
-                <option value={1238}>Large (1238px)</option>
-              </select>
-            </label>
-            <label>
-              Encoding:
-              <select value={encoding} onChange={e => setEncoding(e.target.value)}>
-                <option value="UTF-8">UTF-8</option>
-                <option value="ANSI">ANSI</option>
-                <option value="Cyrillic">Cyrillic</option>
-              </select>
-            </label>
-            <label>
-              DPI:
-              <select value={dpi} onChange={e => setDpi(Number(e.target.value))}>
-                <option value={72}>72 DPI</option>
-                <option value={150}>150 DPI</option>
-                <option value={300}>300 DPI (default)</option>
-                <option value={450}>450 DPI</option>
-                <option value={600}>600 DPI</option>
-              </select>
-            </label>
+        <div className={styles.qrSection}>
+          <div className={styles.qrCard}>
+            <div className={styles.settingsPanel}>
+              <label>
+                Size:
+                <select value={size} onChange={e => setSize(Number(e.target.value))}>
+                  <option value={238}>Small (238px)</option>
+                  <option value={938}>Medium (938px)</option>
+                  <option value={1238}>Large (1238px)</option>
+                </select>
+              </label>
+              <label>
+                Encoding:
+                <select value={encoding} onChange={e => setEncoding(e.target.value)}>
+                  <option value="UTF-8">UTF-8</option>
+                  <option value="ANSI">ANSI</option>
+                  <option value="Cyrillic">Cyrillic</option>
+                </select>
+              </label>
+              <label>
+                DPI:
+                <select value={dpi} onChange={e => setDpi(Number(e.target.value))}>
+                  <option value={72}>72 DPI</option>
+                  <option value={150}>150 DPI</option>
+                  <option value={300}>300 DPI (default)</option>
+                  <option value={450}>450 DPI</option>
+                  <option value={600}>600 DPI</option>
+                </select>
+              </label>
+            </div>
           </div>
         </div>
       ) : (
