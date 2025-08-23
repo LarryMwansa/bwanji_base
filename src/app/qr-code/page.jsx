@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react';
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import styles from "./QRCodeGenerator.module.css";
 import { QRCodeSVG } from 'qrcode.react';
 
@@ -29,7 +29,6 @@ export default function QRCodeGenerator() {
   const [logo, setLogo] = useState(null); // Logo image data URL
   const [showSettings, setShowSettings] = useState(false); // Toggle settings panel
   const qrRef = useRef(null);
-  const [isDark, setIsDark] = useState(true);
 
   // Handle logo upload
   const handleLogoUpload = (e) => {
@@ -46,13 +45,11 @@ export default function QRCodeGenerator() {
   const handleDownload = async () => {
     const qrValue = getQrValue();
     if (!qrValue || qrValue.trim() === '') return;
-    // Create a hidden container for the QRCodeSVG
     const exportSize = size;
     const tempDiv = document.createElement('div');
     tempDiv.style.position = 'absolute';
     tempDiv.style.left = '-9999px';
     document.body.appendChild(tempDiv);
-    // Use React to render QRCodeSVG at exportSize
     const React = await import('react');
     const { createRoot } = await import('react-dom/client');
     const root = createRoot(tempDiv);
@@ -68,7 +65,6 @@ export default function QRCodeGenerator() {
         } : undefined
       })
     );
-    // Wait for the SVG to render
     setTimeout(() => {
       const svg = tempDiv.querySelector('svg');
       if (!svg) {
@@ -100,17 +96,14 @@ export default function QRCodeGenerator() {
       img.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgStr)));
     }, 100);
   };
-     
 
   // Format QR value based on type and encoding
   const encodeValue = (value) => {
     if (encoding === 'UTF-8') return value;
     if (encoding === 'ANSI') {
-      // Simulate ANSI by stripping non-ASCII chars
       return value.replace(/[^\x00-\x7F]/g, '');
     }
     if (encoding === 'Cyrillic') {
-      // Simulate Cyrillic by encoding to windows-1251 (not natively supported in JS, so just tag)
       return `Cyrillic:${value}`;
     }
     return value;
@@ -281,39 +274,43 @@ export default function QRCodeGenerator() {
             style={{ marginLeft: '0.5rem' }}
           />
         </label>
-        <label>
-          Size:
-          <select value={size} onChange={e => setSize(Number(e.target.value))} style={{ marginLeft: '0.5rem', padding: '0.3rem' }}>
-            <option value={238}>Small (238px)</option>
-            <option value={938}>Medium (938px)</option>
-            <option value={1238}>Large (1238px)</option>
-          </select>
-        </label>
-        <label>
-          Encoding:
-          <select value={encoding} onChange={e => setEncoding(e.target.value)} style={{ marginLeft: '0.5rem', padding: '0.3rem' }}>
-            <option value="UTF-8">UTF-8</option>
-            <option value="ANSI">ANSI</option>
-            <option value="Cyrillic">Cyrillic</option>
-          </select>
-        </label>
-        <label>
-          DPI:
-          <select
-            value={dpi}
-            onChange={e => setDpi(Number(e.target.value))}
-            style={{ marginLeft: '0.5rem', padding: '0.3rem', width: '100px' }}
-          >
-            <option value={72}>72 DPI</option>
-            <option value={150}>150 DPI</option>
-            <option value={300}>300 DPI (default)</option>
-            <option value={450}>450 DPI</option>
-            <option value={600}>600 DPI</option>
-          </select>
-        </label>
+        <button className={styles.settingsBtn} type="button" onClick={() => setShowSettings(s => !s)}>
+          {showSettings ? "Close Settings" : "Settings"}
+        </button>
       </div>
-      {/* QR code preview and download */}
-      {(
+      {/* Settings Overlay or QR Preview */}
+      {showSettings ? (
+        <div className={styles.settingsOverlay}>
+          <div className={styles.settingsPanel}>
+            <label>
+              Size:
+              <select value={size} onChange={e => setSize(Number(e.target.value))}>
+                <option value={238}>Small (238px)</option>
+                <option value={938}>Medium (938px)</option>
+                <option value={1238}>Large (1238px)</option>
+              </select>
+            </label>
+            <label>
+              Encoding:
+              <select value={encoding} onChange={e => setEncoding(e.target.value)}>
+                <option value="UTF-8">UTF-8</option>
+                <option value="ANSI">ANSI</option>
+                <option value="Cyrillic">Cyrillic</option>
+              </select>
+            </label>
+            <label>
+              DPI:
+              <select value={dpi} onChange={e => setDpi(Number(e.target.value))}>
+                <option value={72}>72 DPI</option>
+                <option value={150}>150 DPI</option>
+                <option value={300}>300 DPI (default)</option>
+                <option value={450}>450 DPI</option>
+                <option value={600}>600 DPI</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      ) : (
         (type === 'text' && fields.text.trim()) ||
         (type === 'email' && fields.email.trim()) ||
         (type === 'phone' && fields.phone.trim()) ||
@@ -321,8 +318,8 @@ export default function QRCodeGenerator() {
         (type === 'event' && fields.event_summary.trim()) ||
         (type === 'vcard' && fields.vcard_name.trim())
       ) && (
-        <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '238px', height: '238px' }}>
+        <div className={styles.qrSection}>
+          <div className={styles.qrCard}>
             <QRCodeSVG
               id="qr-svg"
               value={getQrValue()}
@@ -335,7 +332,7 @@ export default function QRCodeGenerator() {
               } : undefined}
             />
           </div>
-          <button onClick={handleDownload} style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}>
+          <button className={styles.downloadBtn} onClick={handleDownload}>
             Download QR Code
           </button>
         </div>
