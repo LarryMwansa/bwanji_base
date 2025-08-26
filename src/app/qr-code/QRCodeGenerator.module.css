@@ -1,3 +1,24 @@
+/* Settings icon button, positioned top right inside qrCard */
+.settingsIconBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 2;
+  color: #888;
+  transition: color 0.2s;
+}
+.settingsIconBtn:hover {
+  color: #d32f2f;
+}
+
+/* Make qrCard relative for absolute positioning */
+.qrCard {
+  position: relative;
+}
 
 /* CSS Variables for theme */
 :root {
