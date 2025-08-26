@@ -36,21 +36,21 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className={styles.desktopNav}>
-            <Link href="/services" className={styles.navLink}>
-              Services
+            <Link href="/https://bwanji.digital" className={styles.navLink}>
+              Bwanji Digital
             </Link>
-            <Link href="/about" className={styles.navLink}>
-              About
+            <Link href="/qr-code" className={styles.navLink}>
+              QR Code Generator
+            </Link>
+            <Link href="/social-formatter" className={styles.navLink}>
+              Social Media Post Formatter
             </Link>
             <Link href="/resources" className={styles.navLink}>
               Resources
             </Link>
-            <Link href="/contact" className={styles.navLink}>
-              Contact
-            </Link>
-            <Link href="/register" className={styles.getStartedBtn}>
+            {/* <Link href="/register" className={styles.getStartedBtn}>
               Get Started
-            </Link>
+            </Link> */}
           </nav>
 
           {/* Mobile Menu Button */}
