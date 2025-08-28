@@ -1,0 +1,133 @@
+.footer {
+  background: linear-gradient(135deg,  #764ba2 0%, var(--secondary-light) 100%);
+  backdrop-filter: blur(16px) saturate(200%) brightness(1.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 20px;
+}
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.companyInfo {
+  grid-column: span 2;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.logoImage {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+.logoImage:hover {
+  opacity: 0.8;
+}
+
+.companyDescription {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 1rem;
+}
+
+.socialLink {
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.3s ease;
+}
+
+.socialLink:hover {
+  color: white;
+}
+
+.socialIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.footerSection h4 {
+  color: white;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.footerLinks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerLinks li {
+  margin-bottom: 0.5rem;
+}
+
+.footerLink {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.3s ease;
+}
+
+.footerLink:hover {
+  color: white;
+}
+
+.footerDivider {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: 2rem;
+  padding-top: 2rem;
+  text-align: center;
+}
+
+.copyright {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .companyInfo {
+    grid-column: span 1;
+  }
+  
+  .container {
+    padding: 2rem 16px;
+  }
+  
+  .logoImage {
+    max-width: 80px;
+    height: auto;
+  }
+  
+  .logoText {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .logoImage {
+    max-width: 60px;
+  }
+  
+  .logoText {
+    font-size: 0.875rem;
+  }
+}
